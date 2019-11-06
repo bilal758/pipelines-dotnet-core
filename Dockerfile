@@ -1,7 +1,7 @@
 # STAGE01 - Build application and its dependencies
 FROM microsoft/dotnet:2.2-sdk AS build-env
 WORKDIR /app
-COPY pipelines-dotnet-core/*.csproj ./
+COPY pipelines-dotnet-core.csproj ./
 COPY . ./
 RUN dotnet restore 
 
