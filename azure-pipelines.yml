@@ -10,19 +10,24 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  buildConfiguration: 'Release'
+  imageName: 'quickdevnotes/webapp:$(build.buildNumber)'
 
 steps:
-
-- task: DotNetCoreCLI@2
+- script: dotnet test WebApp.Tests/WebApp.Tests.csproj --logger trx
+  displayName: Run unit tests
+- task: PublishTestResults@2
+  condition: succeededOrFailed()
   inputs:
-    command: publish
-    publishWebProjects: True
-    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
-    zipAfterPublish: True
-
-- task: PublishBuildArtifacts@1
+    testRunner: VSTest
+    testResultsFiles: '**/*.trx'
+- task: Docker@1
+  displayName: Build an image
   inputs:
-    pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
-    artifactName: 'pipelines-dotnet-core'
+    command: Build an image
+    containerregistrytype: Container Registry
+    dockerRegistryEndpoint: DockerHub
+    dockerFile: Dockerfile
+    imageName: $(imageName)
+    imageNamesPath: 
+    restartPolicy: always
 
