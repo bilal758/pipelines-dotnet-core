@@ -11,6 +11,8 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
+  imageName: 'bilal758/test:pipelines-dotnet-core:$(build.buildNumber)'
+
 
 steps:
 - script: dotnet build --configuration $(buildConfiguration)
