@@ -11,12 +11,18 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
-  imageName: 'aspnet-bilal:$(build.buildNumber)'
-
 
 steps:
-- script: dotnet build --configuration $(buildConfiguration)
-  displayName: 'dotnet build $(buildConfiguration)'
 
-- script : docker build -f Dockerfile -t $(imageName)
-  displayName : 'docker'
+- task: DotNetCoreCLI@2
+  inputs:
+    command: publish
+    publishWebProjects: True
+    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+    zipAfterPublish: True
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
+    artifactName: 'pipelines-dotnet-core'
+
