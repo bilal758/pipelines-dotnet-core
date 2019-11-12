@@ -27,3 +27,8 @@ stages:
         dockerfile: '**/Dockerfile'
         tags: |
           $(tag)
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'bilalHub'
+        repository: 'bilal758/test'
+        command: 'push'
