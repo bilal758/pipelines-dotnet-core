@@ -9,7 +9,7 @@ resources:
 - repo: self
 
 variables:
-  tag: '$bilal758.pipelines-dotnet-core-(Build.BuildId)'
+  tag: 'bilal758.pipelines-dotnet-core-$(Build.BuildId)'
 
 stages:
 - stage: Build
